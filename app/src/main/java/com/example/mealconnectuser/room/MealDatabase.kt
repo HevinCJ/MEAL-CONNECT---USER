@@ -6,9 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.example.mealconnectuser.utils.Partner
 
 
-@Database(entities = [MealEntity::class], version = 1, exportSchema = false)
+@Database(entities = [MealEntity::class,Partner::class], version = 1, exportSchema = false)
 @TypeConverters(Convertor::class)
 abstract class MealDatabase:RoomDatabase() {
 

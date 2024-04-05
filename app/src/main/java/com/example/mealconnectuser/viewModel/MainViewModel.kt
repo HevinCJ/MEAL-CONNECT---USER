@@ -24,16 +24,18 @@ class MainViewModel(application:Application):AndroidViewModel(application) {
     private var databaseref:DatabaseReference
     var getalldata = MutableLiveData<List<Partner>>()
     var getallMeal:LiveData<List<MealEntity>>
+    var getTotalAmount:LiveData<Double>
 
     private val mealdao=MealDatabase.getInstance(application).mealDao()
     private val mealRepository:MealRepository
 
     init {
 
-        databaseref=FirebaseDatabase.getInstance().getReference("Users")
+        databaseref=FirebaseDatabase.getInstance().getReference("Partner")
         getAllDataFromFirebase()
         mealRepository= MealRepository(mealdao)
         getallMeal=mealdao.getallMeal()
+        getTotalAmount=mealdao.getTotalAmount()
     }
 
     fun getAllDataFromFirebase(){

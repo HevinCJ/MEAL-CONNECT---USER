@@ -23,13 +23,13 @@
         android:id="@+id/txtviewname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:fontFamily="cursive"
         android:text="Back"
         android:textSize="50sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/txtviewhello"
         app:layout_constraintStart_toEndOf="@+id/txtviewhello"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/txtviewhello" />
 
 
     <EditText

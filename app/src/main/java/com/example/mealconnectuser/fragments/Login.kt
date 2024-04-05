@@ -2,6 +2,7 @@ package com.example.mealconnectuser.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,6 +63,7 @@ class Login : Fragment() {
                     Toast.makeText(requireContext(),"Logged In",Toast.LENGTH_SHORT).show()
                 }else{
                     Toast.makeText(requireContext(),it.exception.toString(),Toast.LENGTH_SHORT).show()
+                    Log.d("exceptionMessage",it.exception.toString())
                 }
             }
         }else{

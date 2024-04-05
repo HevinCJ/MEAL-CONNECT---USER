@@ -9,6 +9,8 @@ class MealRepository(private val mealDao: MealDao) {
 
     val getallMeal=mealDao.getallMeal()
 
+    val getTotalAmount = mealDao.getTotalAmount()
+
     suspend fun insertMeal(mealEntity:MealEntity){
         mealDao.insertMeal(mealEntity)
 
@@ -21,6 +23,8 @@ class MealRepository(private val mealDao: MealDao) {
     suspend fun deleteMeal(mealEntity: MealEntity){
         mealDao.deleteMeal(mealEntity)
     }
+
+
 
 
 }

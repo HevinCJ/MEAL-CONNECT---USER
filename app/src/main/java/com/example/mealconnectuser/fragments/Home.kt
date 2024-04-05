@@ -35,6 +35,7 @@ class Home : Fragment() {
 
         mainviewmodel.getalldata.observe(viewLifecycleOwner){data->
             adapter.setMeal(data)
+            Log.d("userdatalist",data.toString())
         }
 
 

@@ -24,6 +24,10 @@ interface MealDao {
     @Query("SELECT * FROM MEAL_TABLE ORDER BY ID ASC")
     fun getallMeal():LiveData<List<MealEntity>>
 
+    @Query("SELECT SUM(partner_amount) FROM meal_table")
+    fun getTotalAmount(): LiveData<Double>
+
+
 
 
 

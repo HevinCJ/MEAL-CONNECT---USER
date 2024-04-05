@@ -1,6 +1,7 @@
 package com.example.mealconnectuser.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ class Cart : Fragment() {
     private var cart:FragmentCartBinding?=null
     private val binding get() = cart!!
 
-    private val mainViewModel:MainViewModel by viewModels()
+  private val mainViewModel:MainViewModel by viewModels()
     private val cartAdapter:CartAdapter by lazy { CartAdapter(mainViewModel) }
 
     override fun onCreateView(
@@ -32,6 +33,15 @@ class Cart : Fragment() {
             cartAdapter.setCartItem(item)
         }
 
+        mainViewModel.getTotalAmount.observe(viewLifecycleOwner){amount->
+            if (amount!=null){
+                binding.txtviewamount.text = amount.toString()
+            }else{
+                binding.txtviewamount.text = "0.0"
+            }
+
+        }
+
 
 
         return binding.root
@@ -41,7 +51,7 @@ class Cart : Fragment() {
 
     private fun setRecyclerView() {
         binding.cartrcview.adapter=cartAdapter
-        binding.cartrcview.layoutManager=LinearLayoutManager(requireContext())
+        binding.cartrcview.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
     }
 
 

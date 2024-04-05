@@ -2,6 +2,7 @@ package com.example.mealconnectuser.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,7 @@ class SignUp : Fragment() {
             val password = binding.edttextpassword.text.toString()
             val confirmpass = binding.edttextpasswordconfirm.text.toString()
             if (password == confirmpass){
-                createUserInFirebase(email,password)
+                createUserInFirebase(email,password,confirmpass)
             }else{
                 Toast.makeText(requireContext(),"Password Wrong",Toast.LENGTH_SHORT).show()
             }
@@ -48,13 +49,14 @@ class SignUp : Fragment() {
         return binding.root
     }
 
-    private fun createUserInFirebase(email:String,password:String) {
-        if (email.isNotEmpty() && password.isNotEmpty()){
+    private fun createUserInFirebase(email:String,password:String,confirmpass:String) {
+        if (email.isNotEmpty() && password.isNotEmpty() && password==confirmpass){
             auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener{
                 if (it.isSuccessful){
                     IntentToMainActivity()
                 }else{
                     Toast.makeText(requireContext(),it.exception?.message,Toast.LENGTH_SHORT).show()
+                    Log.d("exceptionMessage",it.exception.toString())
                 }
             }
         }else{
