@@ -8,18 +8,18 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mealconnectuser.databinding.MealListAdapterBinding
 import com.example.mealconnectuser.room.MealEntity
-import com.example.mealconnectuser.utils.Partner
+import com.example.mealconnectuser.utils.PartnerData
 import com.example.mealconnectuser.viewModel.MainViewModel
 
 
 class MealAdapter(private val mainViewModel: MainViewModel):RecyclerView.Adapter<MealAdapter.MealViewHolder>() {
 
-    private var meallist:List<Partner> = emptyList()
+    private var meallist:List<PartnerData> = emptyList()
 
     class MealViewHolder(private val binding:MealListAdapterBinding):RecyclerView.ViewHolder(binding.root) {
 
-        fun bindMeal(partner: Partner){
-            binding.userdata=partner
+        fun bindMeal(partnerData: PartnerData){
+            binding.userdata=partnerData
             binding.executePendingBindings()
 
         }
@@ -47,8 +47,8 @@ class MealAdapter(private val mainViewModel: MainViewModel):RecyclerView.Adapter
         holder.addToCart(MealEntity(0,currentmeal),mainViewModel)
     }
 
-    fun setMeal(partner:List<Partner>){
-        meallist=partner
+    fun setMeal(partnerData:List<PartnerData>){
+        meallist=partnerData
         notifyDataSetChanged()
         Log.d("mealist",meallist.toString())
     }

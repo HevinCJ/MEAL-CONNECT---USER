@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.RawValue
 
 @Entity(tableName = "Partner_table")
-data class Partner(
+data class PartnerData(
     @PrimaryKey(autoGenerate = false)
     var id: String = "",
     var mealname: String = "",

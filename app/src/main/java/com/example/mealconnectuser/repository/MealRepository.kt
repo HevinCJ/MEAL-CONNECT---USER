@@ -1,9 +1,7 @@
 package com.example.mealconnectuser.repository
 
-import android.provider.Telephony.Mms.Part
 import com.example.mealconnectuser.room.MealDao
 import com.example.mealconnectuser.room.MealEntity
-import com.example.mealconnectuser.utils.Partner
 
 class MealRepository(private val mealDao: MealDao) {
 

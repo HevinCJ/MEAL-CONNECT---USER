@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.mealconnectuser.R
 import com.example.mealconnectuser.activity.MainActivity
 import com.example.mealconnectuser.databinding.FragmentLoginBinding
+import com.example.mealconnectuser.preferences.AppPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -22,11 +23,13 @@ class Login : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
+    private lateinit var preferences:AppPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth= FirebaseAuth.getInstance()
         databaseReference=FirebaseDatabase.getInstance().getReference("Users")
+        preferences = AppPreferences(requireContext())
     }
 
     override fun onCreateView(
@@ -72,10 +75,15 @@ class Login : Fragment() {
     }
 
     private fun IntentToMainActivity() {
-        val intent = Intent(requireActivity(), MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        requireActivity().finish()
+        if (preferences.profileimage.isNullOrEmpty() || preferences.phoneno.isNullOrEmpty()){
+            findNavController().navigate(R.id.action_login_to_profile2)
+        }else{
+            val intent = Intent(requireActivity(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            requireActivity().finish()
+        }
+
     }
 
 

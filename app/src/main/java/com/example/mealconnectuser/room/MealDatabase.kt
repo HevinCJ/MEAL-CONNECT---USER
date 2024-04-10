@@ -4,12 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import com.example.mealconnectuser.utils.Partner
+import com.example.mealconnectuser.utils.PartnerData
 
 
-@Database(entities = [MealEntity::class,Partner::class], version = 1, exportSchema = false)
+@Database(entities = [MealEntity::class,PartnerData::class], version = 1, exportSchema = false)
 @TypeConverters(Convertor::class)
 abstract class MealDatabase:RoomDatabase() {
 

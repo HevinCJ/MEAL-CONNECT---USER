@@ -7,17 +7,44 @@
     tools:context=".fragments.Profile">
 
 
+    <TextView
+        android:id="@+id/txtviewhello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="cursive"
+        android:text="Welcome,"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtviewname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="Back"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/txtviewhello"
+        app:layout_constraintStart_toEndOf="@+id/txtviewhello"
+        app:layout_constraintTop_toTopOf="@+id/txtviewhello" />
+
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="32dp"
+        android:scaleType="centerCrop"
         android:background="@drawable/profile_image_background"
         android:src="@drawable/profile_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtviewname" />
 
 
     <EditText
@@ -30,7 +57,7 @@
         android:drawablePadding="6dp"
         android:ems="10"
         android:hint="Name"
-        android:inputType="textEmailAddress"
+        android:inputType="none"
         android:padding="6dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
@@ -46,7 +73,7 @@
         android:drawablePadding="6dp"
         android:ems="10"
         android:hint="PhoneNo"
-        android:inputType="textEmailAddress"
+        android:inputType="number"
         android:padding="6dp"
         app:layout_constraintEnd_toEndOf="@+id/edttextemail"
         app:layout_constraintStart_toStartOf="@+id/edttextemail"
@@ -69,16 +96,13 @@
         app:layout_constraintTop_toBottomOf="@+id/edttextname" />
 
     <Button
-        android:id="@+id/logoutbtn"
-        android:layout_width="match_parent"
+        android:id="@+id/savebtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/yellow"
-        android:text="logout"
+        android:text="save details"
         android:textAllCaps="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/edttextphoneno"
+        app:layout_constraintTop_toBottomOf="@+id/edttextphoneno" />
 </androidx.constraintlayout.widget.ConstraintLayout>

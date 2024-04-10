@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mealconnectuser.repository.MealRepository
 import com.example.mealconnectuser.room.MealDatabase
 import com.example.mealconnectuser.room.MealEntity
-import com.example.mealconnectuser.utils.Partner
+import com.example.mealconnectuser.utils.PartnerData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class MainViewModel(application:Application):AndroidViewModel(application) {
 
     private var databaseref:DatabaseReference
-    var getalldata = MutableLiveData<List<Partner>>()
+    var getalldata = MutableLiveData<List<PartnerData>>()
     var getallMeal:LiveData<List<MealEntity>>
     var getTotalAmount:LiveData<Double>
 
@@ -41,11 +41,11 @@ class MainViewModel(application:Application):AndroidViewModel(application) {
     fun getAllDataFromFirebase(){
         databaseref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val userlist = mutableListOf<Partner>()
+                val userlist = mutableListOf<PartnerData>()
                 for (userSnapshot in snapshot.children) {
                     for (partnerSnapshot in userSnapshot.children) {
-                        val partner = partnerSnapshot.getValue<Partner>()
-                        partner?.let {
+                        val partnerData = partnerSnapshot.getValue<PartnerData>()
+                        partnerData?.let {
                             userlist.add(it)
                             
                         }

@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.cart)
                     true
                 }
-                R.id.profilem ->{
-                    navController.navigate(R.id.profile)
+                R.id.settingsm ->{
+                    navController.navigate(R.id.settings)
                     true
                 }
 

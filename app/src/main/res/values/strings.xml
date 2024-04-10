@@ -7,4 +7,5 @@
     <string name="profile">Profile</string>
     <string name="pricetag">Rs</string>
     <string name="free_text">Free</string>
+    <string name="settings">Settings</string>
 </resources>

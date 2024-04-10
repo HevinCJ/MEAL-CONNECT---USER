@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_login_to_signUp"
             app:destination="@id/signUp" />
+        <action
+            android:id="@+id/action_login_to_profile2"
+            app:destination="@id/profile2" />
     </fragment>
     <fragment
         android:id="@+id/signUp"
@@ -21,6 +24,18 @@
         <action
             android:id="@+id/action_signUp_to_login"
             app:destination="@id/login" />
+        <action
+            android:id="@+id/action_signUp_to_profile2"
+            app:destination="@id/profile2" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/profile2"
+        android:name="com.example.mealconnectuser.fragments.Profile"
+        android:label="fragment_profile_"
+        tools:layout="@layout/fragment_profile_" >
+        <action
+            android:id="@+id/action_profile2_to_login"
+            app:destination="@id/login" />
     </fragment>
 </navigation>

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="userdata"
-            type="com.example.mealconnectuser.utils.Partner" />
+            type="com.example.mealconnectuser.utils.PartnerData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SignUp">
@@ -20,13 +20,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/edttxtusername"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/edttext_background"
+        android:drawableLeft="@drawable/baseline_person_24"
+        android:drawablePadding="6dp"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:padding="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/edttextemail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
 
     <EditText
         android:id="@+id/edttextemail"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/edttext_background"
         android:drawableLeft="@drawable/baseline_email_24"
         android:drawablePadding="6dp"
@@ -34,12 +50,9 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.19999999" />
+        app:layout_constraintEnd_toEndOf="@+id/edttxtusername"
+        app:layout_constraintStart_toStartOf="@+id/edttxtusername"
+        app:layout_constraintTop_toBottomOf="@+id/edttxtusername" />
 
     <EditText
         android:id="@+id/edttextpassword"

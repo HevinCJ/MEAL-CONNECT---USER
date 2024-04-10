@@ -2,7 +2,7 @@ package com.example.mealconnectuser.room
 
 import androidx.room.TypeConverter
 import com.example.mealconnectuser.utils.LocationData
-import com.example.mealconnectuser.utils.Partner
+import com.example.mealconnectuser.utils.PartnerData
 import com.google.gson.Gson
 
 class Convertor {
@@ -11,13 +11,13 @@ class Convertor {
     private val gson = Gson()
 
     @TypeConverter
-    fun fromPartner(partner: Partner): String {
-        return gson.toJson(partner)
+    fun fromPartner(partnerData: PartnerData): String {
+        return gson.toJson(partnerData)
     }
 
     @TypeConverter
-    fun toPartner(partnerString: String): Partner {
-        return gson.fromJson(partnerString, Partner::class.java)
+    fun toPartner(partnerString: String): PartnerData {
+        return gson.fromJson(partnerString, PartnerData::class.java)
     }
 
     @TypeConverter
