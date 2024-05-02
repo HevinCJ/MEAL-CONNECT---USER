@@ -38,7 +38,7 @@ class SignUp : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         signup = FragmentSignUpBinding.inflate(layoutInflater,container,false)
 
         binding.txtviewloginclicker.setOnClickListener {

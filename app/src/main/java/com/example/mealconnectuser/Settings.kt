@@ -53,9 +53,9 @@ class Settings : Fragment() {
 
     private fun setTheProfile() {
         Glide.with(requireContext()).load(preferences.profileimage).into(binding.imagviewProfile)
-        binding.txtviewemail.setText(preferences.email)
-        binding.txtviewname.setText(preferences.username)
-        binding.txtviewphoneno.setText(preferences.phoneno)
+        binding.txtviewemail.text = preferences.email
+        binding.txtviewname.text = preferences.username
+        binding.txtviewphoneno.text = preferences.phoneno
     }
 
 

@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mealconnectuser.adapter.MealAdapter
 import com.example.mealconnectuser.databinding.FragmentHomeBinding
+import com.example.mealconnectuser.utils.CustomProgressBar
+
 import com.example.mealconnectuser.viewModel.MainViewModel
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
@@ -22,26 +24,31 @@ class Home : Fragment() {
     private val mainviewmodel:MainViewModel by viewModels()
     private val adapter by lazy { MealAdapter(mainviewmodel) }
 
+    private lateinit var progressBar: CustomProgressBar
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-       homefrag= FragmentHomeBinding.inflate(layoutInflater,container,false)
-
-
+        homefrag = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        progressBar = CustomProgressBar(requireContext(), null)
+        binding.root.addView(progressBar)
         setUpRecyclerView()
 
-        mainviewmodel.getalldata.observe(viewLifecycleOwner){data->
-            adapter.setMeal(data)
-            Log.d("userdatalist",data.toString())
+        mainviewmodel.getAllMeals.observe(viewLifecycleOwner) { data ->
+            if (data.isNullOrEmpty()) {
+                progressBar.show()
+                progressBar.setText("No Data Found")
+            } else {
+                adapter.setMeal(data)
+                progressBar.hide()
+            }
         }
-
-
 
         return binding.root
     }
+
 
     private fun setUpRecyclerView() {
         binding.recyclerviewhome.adapter=adapter
@@ -49,6 +56,9 @@ class Home : Fragment() {
     }
 
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        homefrag=null
+    }
 
 }

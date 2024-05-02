@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.mealconnectuser.R
-import com.example.mealconnectuser.room.MealEntity
 import com.example.mealconnectuser.utils.LocationData
 import com.example.mealconnectuser.viewModel.MainViewModel
 
@@ -65,6 +64,15 @@ class BindingAdapter {
                 textView.text = "$amount Rs"
             }
 
+        }
+        @BindingAdapter("userQuantityOrDefault")
+        @JvmStatic
+        fun userQuantityOrDefault(textView: TextView, userQuantity: String?) {
+            if (userQuantity.isNullOrEmpty()){
+                textView.text = "1"
+            }else{
+                textView.text=userQuantity
+            }
         }
 
 

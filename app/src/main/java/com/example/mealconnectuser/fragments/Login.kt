@@ -35,7 +35,7 @@ class Login : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         login = FragmentLoginBinding.inflate(layoutInflater,container,false)
 
         binding.txtviewsignup.setOnClickListener {
@@ -75,7 +75,7 @@ class Login : Fragment() {
     }
 
     private fun IntentToMainActivity() {
-        if (preferences.profileimage.isNullOrEmpty() || preferences.phoneno.isNullOrEmpty()){
+        if (preferences.profileimage.isNullOrEmpty() || preferences.phoneno.isNullOrEmpty() || preferences.email.isNullOrEmpty()||preferences.username.isNullOrEmpty()){
             findNavController().navigate(R.id.action_login_to_profile2)
         }else{
             val intent = Intent(requireActivity(), MainActivity::class.java)

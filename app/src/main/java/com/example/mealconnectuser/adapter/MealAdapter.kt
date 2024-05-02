@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mealconnectuser.databinding.MealListAdapterBinding
-import com.example.mealconnectuser.room.MealEntity
 import com.example.mealconnectuser.utils.PartnerData
 import com.example.mealconnectuser.viewModel.MainViewModel
 
@@ -23,10 +22,10 @@ class MealAdapter(private val mainViewModel: MainViewModel):RecyclerView.Adapter
             binding.executePendingBindings()
 
         }
-        fun addToCart(meal: MealEntity,mainViewModel: MainViewModel){
+        fun addToCart(partnerData: PartnerData,mainViewModel: MainViewModel){
             binding.addtocartbtn.setOnClickListener {
-                mainViewModel.insertMeal(meal)
-                Toast.makeText(binding.root.context,"Added ${meal.meal.mealname} To Cart",Toast.LENGTH_SHORT).show()
+                mainViewModel.addToCartOperation(true,partnerData)
+                Toast.makeText(binding.root.context,"Added ${partnerData.mealname}",Toast.LENGTH_SHORT).show()
             }
         }
         
@@ -44,7 +43,7 @@ class MealAdapter(private val mainViewModel: MainViewModel):RecyclerView.Adapter
     override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
        val currentmeal = meallist[position]
         holder.bindMeal(currentmeal)
-        holder.addToCart(MealEntity(0,currentmeal),mainViewModel)
+        holder.addToCart(currentmeal,mainViewModel)
     }
 
     fun setMeal(partnerData:List<PartnerData>){

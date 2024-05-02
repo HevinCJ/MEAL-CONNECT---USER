@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/cart"
-        android:name="com.example.mealconnectuser.fragments.Cart"
+        android:name="com.example.mealconnectuser.fragments.cart.Cart"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
     <fragment

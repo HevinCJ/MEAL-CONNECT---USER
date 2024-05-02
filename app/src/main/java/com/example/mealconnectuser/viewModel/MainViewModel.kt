@@ -3,12 +3,8 @@ package com.example.mealconnectuser.viewModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.mealconnectuser.repository.MealRepository
-import com.example.mealconnectuser.room.MealDatabase
-import com.example.mealconnectuser.room.MealEntity
 import com.example.mealconnectuser.utils.PartnerData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,30 +12,25 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(application:Application):AndroidViewModel(application) {
 
-    private var databaseref:DatabaseReference
-    var getalldata = MutableLiveData<List<PartnerData>>()
-    var getallMeal:LiveData<List<MealEntity>>
-    var getTotalAmount:LiveData<Double>
+    private var partnerRef:DatabaseReference
+    var getAllMeals = MutableLiveData<List<PartnerData>>()
+    var getAllCartItems = MutableLiveData<List<PartnerData>>()
+     var getAlltotalSum = MutableLiveData<Double>()
 
-    private val mealdao=MealDatabase.getInstance(application).mealDao()
-    private val mealRepository:MealRepository
 
     init {
-
-        databaseref=FirebaseDatabase.getInstance().getReference("Partner")
+        partnerRef=FirebaseDatabase.getInstance().getReference("Partner")
         getAllDataFromFirebase()
-        mealRepository= MealRepository(mealdao)
-        getallMeal=mealdao.getallMeal()
-        getTotalAmount=mealdao.getTotalAmount()
+        getAllCartItems()
+        calculateTotalPriceOfItems()
     }
 
     fun getAllDataFromFirebase(){
-        databaseref.addValueEventListener(object : ValueEventListener {
+        partnerRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val userlist = mutableListOf<PartnerData>()
                 for (userSnapshot in snapshot.children) {
@@ -51,7 +42,7 @@ class MainViewModel(application:Application):AndroidViewModel(application) {
                         }
                     }
                 }
-                getalldata.value = userlist
+                getAllMeals.value = userlist
                 Log.d("userlist", userlist.toString())
             }
 
@@ -62,19 +53,75 @@ class MainViewModel(application:Application):AndroidViewModel(application) {
         })
     }
 
-    fun insertMeal(meal: MealEntity){
-        viewModelScope.launch(Dispatchers.IO){
-            mealRepository.insertMeal(meal)
+    fun addToCartOperation(addedToCart:Boolean,partnerData: PartnerData){
+        viewModelScope.launch {
+            when(addedToCart){
+                true-> partnerRef.child(partnerData.id).child(partnerData.key).child("addedToCart").setValue(true)
+                false-> partnerRef.child(partnerData.id).child(partnerData.key).child("addedToCart").setValue(false)
+            }
+
         }
     }
 
-    fun deleteMeal(meal: MealEntity){
-        viewModelScope.launch(Dispatchers.IO){
-            mealRepository.deleteMeal(meal)
-        }
+    fun getAllCartItems() {
+        partnerRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val cartItems = mutableListOf<PartnerData>()
+
+                for (userSnapshot in snapshot.children) {
+                    for (partnerSnapshot in userSnapshot.children) {
+                        val partnerData = partnerSnapshot.getValue<PartnerData>()
+                        partnerData?.let {
+                            if (it.addedToCart) {
+                                cartItems.add(it)
+                            }
+                        }
+                    }
+                }
+
+                getAllCartItems.value = cartItems
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
     }
 
 
+
+
+    fun calculateTotalPriceOfItems() {
+        partnerRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var totalSum = 0.0
+
+                for (userSnapshot in dataSnapshot.children) {
+                    for (partnerSnapshot in userSnapshot.children) {
+                        val partnerData = partnerSnapshot.getValue(PartnerData::class.java)
+                        partnerData?.let {
+                            if (it.addedToCart) {
+                                val itemTotal = try {
+                                    it.userquantity.toDouble() * it.amount.toDouble()
+                                } catch (e: NumberFormatException) {
+                                    0.0 // Handle exception gracefully, default to 0.0
+                                }
+                                totalSum += itemTotal
+                            }
+                        }
+                    }
+                }
+
+                // Update LiveData with the total sum value after calculating it
+                getAlltotalSum.value = totalSum
+
+                Log.d("Total sum of items:", totalSum.toString())
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
 
 
 
