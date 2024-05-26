@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.mealconnectuser.utils.NetworkResult
 import com.example.mealconnectuser.utils.PartnerData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,12 +25,14 @@ class MainViewModel(application:Application):AndroidViewModel(application) {
 
     init {
         partnerRef=FirebaseDatabase.getInstance().getReference("Partner")
-        getAllDataFromFirebase()
         getAllCartItems()
         calculateTotalPriceOfItems()
     }
 
-    fun getAllDataFromFirebase(){
+    fun getAllDataFromFirebase(resultCallback:(NetworkResult<List<PartnerData>>) -> Unit){
+
+        resultCallback(NetworkResult.Loading())
+
         partnerRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val userlist = mutableListOf<PartnerData>()
@@ -42,12 +45,13 @@ class MainViewModel(application:Application):AndroidViewModel(application) {
                         }
                     }
                 }
-                getAllMeals.value = userlist
+
+                resultCallback(NetworkResult.Success(userlist))
                 Log.d("userlist", userlist.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+               resultCallback(NetworkResult.Error(null,error.message))
             }
 
         })

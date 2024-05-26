@@ -24,11 +24,11 @@ class CustomProgressBar(context: Context, attrs: AttributeSet? = null) : Relativ
     }
 
     fun show() {
-      visibility = VISIBLE
+        visibility = VISIBLE
     }
 
     fun hide() {
-       visibility = GONE
+        visibility = GONE
     }
 
     fun setText(text:String){

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mealconnectuser.adapter.MealAdapter
 import com.example.mealconnectuser.databinding.FragmentHomeBinding
 import com.example.mealconnectuser.utils.CustomProgressBar
+import com.example.mealconnectuser.utils.NetworkResult
 
 import com.example.mealconnectuser.viewModel.MainViewModel
 import com.google.firebase.ktx.Firebase
@@ -34,17 +35,27 @@ class Home : Fragment() {
         homefrag = FragmentHomeBinding.inflate(layoutInflater, container, false)
         progressBar = CustomProgressBar(requireContext(), null)
         binding.root.addView(progressBar)
+
         setUpRecyclerView()
 
-        mainviewmodel.getAllMeals.observe(viewLifecycleOwner) { data ->
-            if (data.isNullOrEmpty()) {
-                progressBar.show()
-                progressBar.setText("No Data Found")
-            } else {
-                adapter.setMeal(data)
-                progressBar.hide()
+        mainviewmodel.getAllDataFromFirebase { result ->
+            when (result) {
+                is NetworkResult.Loading -> {
+                    progressBar.show()
+                }
+                is NetworkResult.Error -> {
+                    progressBar.setText("Something Went Wrong")
+                }
+                is NetworkResult.Success -> {
+                    if (result.data != null) {
+                        adapter.setMeal(result.data)
+                        progressBar.hide()
+
+                    }
+                }
             }
         }
+
 
         return binding.root
     }

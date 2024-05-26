@@ -30,7 +30,6 @@ class Cart : Fragment() {
 
     private lateinit var progressBar:CustomProgressBar
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,7 +71,6 @@ class Cart : Fragment() {
             alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             alertDialog.show()
 
-            // Access views inside the dialog
             dialogueBinding.nextbtn.setOnClickListener{
                 Log.d("CartFragment", "nextbtn clicked")
                 val isChecked = dialogueBinding.checkBox.isChecked
@@ -80,8 +78,7 @@ class Cart : Fragment() {
                     Log.d("CartFragment", "nextbtn intentstartd")
                     IntentToOrderActivity()
                 } else {
-                    // Checkbox is not checked
-                    // Do something else...
+
                 }
             }
         }
@@ -93,15 +90,26 @@ class Cart : Fragment() {
 
     private fun IntentToOrderActivity() {
         val intent = Intent(requireActivity(), OrderActivity::class.java)
-        val orderdata = mainViewModel.getAllCartItems.value.toString()
+        val orderDataList = mainViewModel.getAllCartItems.value
+
+        val numbers = ArrayList<String>()
+
+        orderDataList?.forEach { partnerData ->
+            numbers.add(partnerData.key)
+            numbers.add(partnerData.amount)
+            numbers.add(partnerData.userquantity)
+            numbers.add(partnerData.image)
+            numbers.add(partnerData.descp)
+            numbers.add(partnerData.mealname)
+        }
         val totalSum = mainViewModel.getAlltotalSum.value.toString()
 
-        intent.putExtra("orderdata", orderdata)
-        intent.putExtra("totalsum", totalSum)
-
+        intent.putStringArrayListExtra("key_data", numbers)
+        intent.putExtra("key_sum", totalSum)
+        Log.d("CartFragment", "totalSum: $totalSum")
         startActivity(intent)
-
     }
+
 
 
 

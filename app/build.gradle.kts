@@ -111,4 +111,7 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.installations)
 
+    //razorpay
+    implementation(libs.checkout)
+
 }

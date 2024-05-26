@@ -10,6 +10,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.mealconnectuser.R
 import com.example.mealconnectuser.utils.LocationData
+import com.example.mealconnectuser.utils.PartnerData
 import com.example.mealconnectuser.viewModel.MainViewModel
 
 class BindingAdapter {

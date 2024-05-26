@@ -14,10 +14,23 @@
         android:id="@+id/cart"
         android:name="com.example.mealconnectuser.fragments.cart.Cart"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cart_to_placeOrder"
+            app:destination="@id/placeOrder" />
+    </fragment>
     <fragment
         android:id="@+id/settings"
         android:name="com.example.mealconnectuser.Settings"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/placeOrder"
+        android:name="com.example.mealconnectuser.PlaceOrder"
+        android:label="fragment_place_order"
+        tools:layout="@layout/fragment_place_order" >
+        <action
+            android:id="@+id/action_placeOrder_to_cart"
+            app:destination="@id/cart" />
+    </fragment>
 </navigation>

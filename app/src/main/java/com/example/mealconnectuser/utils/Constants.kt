@@ -1,4 +1,4 @@
-package com.example.mealconnectuser.constants
+package com.example.mealconnectuser.utils
 
 class Constants {
 

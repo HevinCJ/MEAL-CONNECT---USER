@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
-
-class PartnerData(){
+@Parcelize
+class PartnerData():Parcelable{
 
     var id: String = ""
     var key: String = ""
@@ -20,7 +20,9 @@ class PartnerData(){
     var addedToCart: Boolean = false
     var location: LocationData = LocationData()
     var timestamp: Long = 0L
-    var userquantity:String = ""
+    var userquantity:String = "1"
+    var isorderplaced:Boolean = false
+    var userPhoneNo:String = ""
 
     constructor(
         key: String,
@@ -31,6 +33,26 @@ class PartnerData(){
         this.amount = amount
         this.userquantity=userquantity
     }
+
+    constructor(
+        key: String,
+        amount: String,
+        userquantity:String,
+        image:String,
+        descp: String,
+        mealname: String
+    ) : this() {
+        this.key = key
+        this.amount = amount
+        this.userquantity=userquantity
+        this.image=image
+        this.descp=descp
+        this.mealname=mealname
+    }
+
+
+
+
 
     constructor(
         id:String,
@@ -56,5 +78,7 @@ class PartnerData(){
         this.addedToCart = false
         this.timestamp = timestamp
     }
+
+
 }
 
