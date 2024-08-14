@@ -1,44 +1,45 @@
-package com.example.mealconnectuser.fragments.cart
+package com.example.mealconnectuser.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mealconnectuser.databinding.CartAdapterBinding
 import com.example.mealconnectuser.utils.PartnerData
-import com.example.mealconnectuser.viewModel.MainViewModel
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import com.example.mealconnectuser.viewmodel.MainViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class CartAdapter(private val mainViewModel: MainViewModel): RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     private var cartlist:List<PartnerData> = emptyList()
-    private var partnerRef = FirebaseDatabase.getInstance().getReference("Partner")
-
+    private var userRef = FirebaseDatabase.getInstance().getReference("Users")
+    private var auth = FirebaseAuth.getInstance()
     class CartViewHolder(private val binding: CartAdapterBinding):RecyclerView.ViewHolder(binding.root){
 
-        fun bindMeal(cartItems:PartnerData,mainViewModel: MainViewModel,partnerref: DatabaseReference){
-            binding.cartItems=cartItems
+        fun bindMeal(cartItems: PartnerData, mainViewModel: MainViewModel, userRef: DatabaseReference, auth: FirebaseAuth) {
+            binding.cartItems = cartItems
             binding.executePendingBindings()
+
             binding.removecartbtn.setOnClickListener {
-                mainViewModel.addToCartOperation(false,cartItems)
-                Toast.makeText(binding.root.context,"Removed ${cartItems.mealname}",Toast.LENGTH_SHORT).show()
-                updateQuantityInFirebase(cartItems,partnerref,"1")
+                mainViewModel.addToCartOperation(cartItems, false)
+                Toast.makeText(binding.root.context, "Removed ${cartItems.mealname}", Toast.LENGTH_SHORT).show()
             }
+
+            updateQuantity(cartItems, userRef, auth)
         }
 
 
-        fun updateQuantity(cartItems: PartnerData,partnerref:DatabaseReference) {
+        fun updateQuantity(cartItems: PartnerData,userref: DatabaseReference,auth: FirebaseAuth) {
             var quantity = binding.txtviewquantityno.text.toString().toInt()
             binding.apply {
                 imgbtnadd.setOnClickListener {
                     if (quantity<5){
                         quantity += 1
                         txtviewquantityno.text = quantity.toString()
-                      updateQuantityInFirebase(cartItems,partnerref,quantity.toString())
+                      updateQuantityInFirebase(auth,cartItems,userref,quantity.toString())
                     } else {
                 Toast.makeText(
                     itemView.context,
@@ -52,7 +53,7 @@ class CartAdapter(private val mainViewModel: MainViewModel): RecyclerView.Adapte
                     if (quantity > 1) {
                         quantity -= 1
                         txtviewquantityno.text = quantity.toString()
-                        updateQuantityInFirebase(cartItems, partnerref, quantity.toString())
+                        updateQuantityInFirebase(auth,cartItems, userref, quantity.toString())
                     } else {
                         Toast.makeText(
                             itemView.context,
@@ -64,9 +65,9 @@ class CartAdapter(private val mainViewModel: MainViewModel): RecyclerView.Adapte
             }
         }
 
-        private fun updateQuantityInFirebase(cartItems: PartnerData, partnerref: DatabaseReference,quantity:String) {
+        private fun updateQuantityInFirebase(auth:FirebaseAuth,cartItems: PartnerData, partnerref: DatabaseReference,quantity:String) {
             try {
-                partnerref.child(cartItems.id).child(cartItems.key).child("userquantity").setValue(quantity)
+                partnerref.child(auth.currentUser!!.uid).child("foodItems").child(cartItems.key).child("userquantity").setValue(quantity)
             }catch (e:Exception){
                 Toast.makeText(
                     itemView.context,
@@ -85,17 +86,17 @@ class CartAdapter(private val mainViewModel: MainViewModel): RecyclerView.Adapte
 
     override fun getItemCount(): Int {
         return cartlist.size
+        Log.d("cartitems", cartlist.size.toString())
     }
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
-        val currentItem = cartlist[position]
-        holder.bindMeal(currentItem,mainViewModel,partnerRef)
-        holder.updateQuantity(currentItem,partnerRef)
-
+            val currentItem = cartlist[position]
+                Log.d("foodItem", currentItem.mealname)
+                holder.bindMeal(currentItem, mainViewModel, userRef,auth)
     }
-
     fun setItemsInCart(Items:List<PartnerData>){
         this.cartlist=Items
         notifyDataSetChanged()
     }
+
 }

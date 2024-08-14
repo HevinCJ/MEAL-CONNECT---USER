@@ -8,12 +8,13 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mealconnectuser.databinding.MealListAdapterBinding
 import com.example.mealconnectuser.utils.PartnerData
-import com.example.mealconnectuser.viewModel.MainViewModel
+import com.example.mealconnectuser.viewmodel.MainViewModel
 
 
 class MealAdapter(private val mainViewModel: MainViewModel):RecyclerView.Adapter<MealAdapter.MealViewHolder>() {
 
     private var meallist:List<PartnerData> = emptyList()
+
 
     class MealViewHolder(private val binding:MealListAdapterBinding):RecyclerView.ViewHolder(binding.root) {
 
@@ -22,10 +23,10 @@ class MealAdapter(private val mainViewModel: MainViewModel):RecyclerView.Adapter
             binding.executePendingBindings()
 
         }
-        fun addToCart(partnerData: PartnerData,mainViewModel: MainViewModel){
+        fun addToCart(partnerData: PartnerData, mainViewModel: MainViewModel) {
             binding.addtocartbtn.setOnClickListener {
-                mainViewModel.addToCartOperation(true,partnerData)
-                Toast.makeText(binding.root.context,"Added ${partnerData.mealname}",Toast.LENGTH_SHORT).show()
+                mainViewModel.addToCartOperation(partnerData,true)
+                Toast.makeText(binding.root.context, "Added ${partnerData.mealname}", Toast.LENGTH_SHORT).show()
             }
         }
         
@@ -41,9 +42,10 @@ class MealAdapter(private val mainViewModel: MainViewModel):RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
-       val currentmeal = meallist[position]
+
+        val currentmeal = meallist[position]
         holder.bindMeal(currentmeal)
-        holder.addToCart(currentmeal,mainViewModel)
+        holder.addToCart(currentmeal, mainViewModel)
     }
 
     fun setMeal(partnerData:List<PartnerData>){
@@ -51,5 +53,7 @@ class MealAdapter(private val mainViewModel: MainViewModel):RecyclerView.Adapter
         notifyDataSetChanged()
         Log.d("mealist",meallist.toString())
     }
+
+
 
 }

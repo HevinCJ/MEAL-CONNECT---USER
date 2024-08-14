@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.mealconnectuser.activity.MainActivity
@@ -45,7 +47,15 @@ class Settings : Fragment() {
             }
         }
 
+        binding.constrainlytprofile.setOnClickListener {
+            val navController = findNavController()
+            if (navController.currentDestination?.id == R.id.settings){
+                navController.navigate(R.id.action_settings_to_profile2)
+            }else{
+                Toast.makeText(requireContext(), "Navcontroller not found", Toast.LENGTH_SHORT).show()
+            }
 
+        }
 
 
         return binding.root
@@ -63,6 +73,7 @@ class Settings : Fragment() {
             val intent = Intent(requireActivity(), StartActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+            Toast.makeText(requireContext(), "Logged Out", Toast.LENGTH_SHORT).show()
             requireActivity().finish()
     }
 

@@ -1,28 +1,30 @@
 package com.example.mealconnectuser.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mealconnectuser.adapter.MealAdapter
 import com.example.mealconnectuser.databinding.FragmentHomeBinding
 import com.example.mealconnectuser.utils.CustomProgressBar
 import com.example.mealconnectuser.utils.NetworkResult
+import com.example.mealconnectuser.viewmodel.HomeViewModel
 
-import com.example.mealconnectuser.viewModel.MainViewModel
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
+import com.example.mealconnectuser.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class Home : Fragment() {
   private var homefrag:FragmentHomeBinding?=null
     private val binding get() = homefrag!!
 
-    private val mainviewmodel:MainViewModel by viewModels()
+    private val homeViewModel:HomeViewModel by viewModels()
+        private val mainviewmodel:MainViewModel by viewModels()
+
     private val adapter by lazy { MealAdapter(mainviewmodel) }
 
     private lateinit var progressBar: CustomProgressBar
@@ -33,31 +35,58 @@ class Home : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         homefrag = FragmentHomeBinding.inflate(layoutInflater, container, false)
+
+        return binding.root
+    }
+
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
         progressBar = CustomProgressBar(requireContext(), null)
         binding.root.addView(progressBar)
 
         setUpRecyclerView()
 
-        mainviewmodel.getAllDataFromFirebase { result ->
-            when (result) {
+        homeViewModel.getAllPartnerDataFromFirebase()
+        homeViewModel.partnerLiveData.observe(viewLifecycleOwner){result->
+            when(result){
+                is NetworkResult.Error -> {
+                    progressBar.show()
+                    progressBar.setText("Something Went Wrong,Please try again later...")
+                }
                 is NetworkResult.Loading -> {
                     progressBar.show()
                 }
-                is NetworkResult.Error -> {
-                    progressBar.setText("Something Went Wrong")
+                is NetworkResult.Nodata -> {
+                    progressBar.hide()
+                    handleCartEmptyState(true)
                 }
                 is NetworkResult.Success -> {
-                    if (result.data != null) {
-                        adapter.setMeal(result.data)
-                        progressBar.hide()
-
-                    }
+                    progressBar.hide()
+                    handleCartEmptyState(false)
+                    result.data?.let { adapter.setMeal(it) }
                 }
             }
         }
 
 
-        return binding.root
+
+
+
+
+    }
+    private fun handleCartEmptyState(isEmpty: Boolean) {
+        if (isEmpty && homefrag!=null) {
+            binding.imgviewnodata.visibility = View.VISIBLE
+            binding.txtviewnodata.visibility = View.VISIBLE
+        } else {
+            binding.imgviewnodata.visibility = View.INVISIBLE
+            binding.txtviewnodata.visibility = View.INVISIBLE
+        }
     }
 
 

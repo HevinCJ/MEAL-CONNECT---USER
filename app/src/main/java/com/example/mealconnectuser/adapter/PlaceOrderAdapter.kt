@@ -4,14 +4,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.mealconnectuser.databinding.PlaceOrderItemBinding
 import com.example.mealconnectuser.utils.PartnerData
-import kotlin.collections.ArrayList
 
 class PlaceOrderAdapter(): RecyclerView.Adapter<PlaceOrderAdapter.PlaceOrderViewHolder>() {
 
-    private var placeOrderList = ArrayList<PartnerData>()
+    private var placeOrderList:List<PartnerData>  = emptyList()
 
     class PlaceOrderViewHolder(private val binding: PlaceOrderItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindMealData(mealData: PartnerData) {
@@ -36,22 +34,12 @@ class PlaceOrderAdapter(): RecyclerView.Adapter<PlaceOrderAdapter.PlaceOrderView
         Log.d("currentmeal",currentItem.toString())
     }
 
-    fun setPlaceOrderList(numbers: ArrayList<String>?) {
-        if (numbers != null) {
-            val partnerDataList = numbers.chunked(6).map {
-                PartnerData(
-                    it[0], // key
-                    it[1], // amount
-                    it[2], // userquantity
-                    it[3], // image
-                    it[4], // descp
-                    it[5]  // mealname
-                )
-            }
-            this.placeOrderList.clear()
-            this.placeOrderList.addAll(partnerDataList)
+    fun setPlaceOrderList(partnerDataList: Array<PartnerData>) {
+        if (partnerDataList != null) {
+            Log.d("PlaceOrderAdapter", partnerDataList[0].mealname.toString())
+            this.placeOrderList= partnerDataList.toList()
             notifyDataSetChanged()
-            Log.d("currentmeal", numbers.toString())
+
         }
     }
 

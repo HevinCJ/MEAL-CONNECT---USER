@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.cart.Cart">
+    tools:context=".fragments.Cart">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -29,7 +28,7 @@
         android:text="0.0"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/placeorderbtn"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/cartrcview" />
 
@@ -59,4 +58,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/noitemimage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="#958D8D"
+        android:src="@drawable/nocart"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/cartrcview"
+        app:layout_constraintEnd_toEndOf="@+id/cartrcview"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cartrcview"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/noitemtxtview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/amaranth_bold_italic"
+        android:text="Your Cart is Empty"
+        android:textColor="#C5C5C5"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/noitemimage"
+        app:layout_constraintStart_toStartOf="@+id/noitemimage"
+        app:layout_constraintTop_toBottomOf="@+id/noitemimage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

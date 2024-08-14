@@ -3,27 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/meal_nav_graph"
-    app:startDestination="@id/home2">
+    app:startDestination="@id/home">
 
     <fragment
-        android:id="@+id/home2"
+        android:id="@+id/home"
         android:name="com.example.mealconnectuser.fragments.Home"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/cart"
-        android:name="com.example.mealconnectuser.fragments.cart.Cart"
+        android:name="com.example.mealconnectuser.fragments.Cart"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" >
         <action
             android:id="@+id/action_cart_to_placeOrder"
             app:destination="@id/placeOrder" />
+        <argument
+            android:name="cartItems"
+            app:argType="com.example.mealconnectuser.utils.PartnerData" />
     </fragment>
-    <fragment
-        android:id="@+id/settings"
-        android:name="com.example.mealconnectuser.Settings"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/placeOrder"
         android:name="com.example.mealconnectuser.PlaceOrder"
@@ -32,5 +30,26 @@
         <action
             android:id="@+id/action_placeOrder_to_cart"
             app:destination="@id/cart" />
+        <argument
+            android:name="cartItem"
+            app:argType="com.example.mealconnectuser.utils.PartnerData[]" />
+        <argument
+            android:name="totalPrice"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.example.mealconnectuser.fragments.Profile"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.example.mealconnectuser.Settings"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+
+        <action
+            android:id="@+id/action_settings_to_profile2"
+            app:destination="@id/profile" />
     </fragment>
 </navigation>

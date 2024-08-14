@@ -18,6 +18,7 @@ import com.example.mealconnectuser.activity.MainActivity
 import com.example.mealconnectuser.activity.StartActivity
 import com.example.mealconnectuser.databinding.FragmentProfileBinding
 import com.example.mealconnectuser.preferences.AppPreferences
+import com.example.mealconnectuser.utils.CustomProgressBar
 import com.example.mealconnectuser.utils.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
@@ -50,6 +51,8 @@ class Profile : Fragment() {
     private lateinit var databaseref:DatabaseReference
     private  lateinit var imageuri:Uri
 
+    private lateinit var customProgressBar: CustomProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         databaseref=FirebaseDatabase.getInstance().getReference("Users")
@@ -57,7 +60,7 @@ class Profile : Fragment() {
         preferences = AppPreferences(requireContext())
         storageref=FirebaseStorage.getInstance().getReference("Images")
         id=databaseref.push().key.toString()
-        setUserName()
+        setUserDetails()
     }
 
     override fun onCreateView(
@@ -65,18 +68,20 @@ class Profile : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         profile= FragmentProfileBinding.inflate(layoutInflater,container,false)
-
-
-
+        customProgressBar = CustomProgressBar(requireContext(),null)
+        binding.root.addView(customProgressBar)
 
         binding.savebtn.setOnClickListener {
             val name = binding.edttextname.text.toString()
             val email = binding.edttextemail.text.toString()
             val phoneno = binding.edttextphoneno.text.toString()
+            customProgressBar.show()
             if (name.isNotEmpty() && email.isNotEmpty() && phoneno.isNotEmpty()){
                 saveDetailsToFirebase(name, email, phoneno)
+                customProgressBar.setText("Saving Profile Data,Please Wait..")
             }else{
                 Toast.makeText(requireContext(),"Please Fill The Fields",Toast.LENGTH_SHORT).show()
+                customProgressBar.hide()
             }
         }
 
@@ -104,7 +109,7 @@ class Profile : Fragment() {
                     val imageUrl = uploadTask.metadata?.reference?.downloadUrl?.await().toString()
 
                     withContext(Dispatchers.Main) {
-                        val databaseReference = databaseref.child(auth.currentUser.uid)
+                        val databaseReference = databaseref.child(auth.currentUser?.uid.orEmpty())
                         databaseReference.apply {
                             child("username").setValue(name).addOnCompleteListener { usernameTask ->
                                 if (usernameTask.isSuccessful) {
@@ -114,6 +119,7 @@ class Profile : Fragment() {
                                         username = name
                                         profileimage = imageUrl
                                     }.also {
+                                        child("id").setValue(auth.currentUser?.uid.orEmpty())
                                         child("email").setValue(email)
                                         child("phoneno").setValue(phoneno)
                                         child("profileimage").setValue(imageUrl)
@@ -125,6 +131,7 @@ class Profile : Fragment() {
                                         "Firebase",
                                         "Failed to save username: ${usernameTask.exception?.message}"
                                     )
+                                    customProgressBar.hide()
                                 }
                             }
 
@@ -137,6 +144,7 @@ class Profile : Fragment() {
                             "No Image Found",
                             Toast.LENGTH_SHORT
                         ).show()
+                        customProgressBar.hide()
                     }
                 }
             } catch (e: Exception) {
@@ -147,7 +155,9 @@ class Profile : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     Log.e("Firebase Error", "Error uploading data to Firebase: ${e.message}", e)
+                    customProgressBar.hide()
                 }
+
             }
         }
     }
@@ -159,11 +169,12 @@ class Profile : Fragment() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         requireActivity().finish()
+        customProgressBar.hide()
     }
 
 
-    private fun setUserName(){
-        databaseref.child(auth.currentUser.uid).addValueEventListener(object :ValueEventListener{
+    private fun setUserDetails(){
+        databaseref.child(auth.currentUser?.uid.orEmpty()).addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user  = snapshot.getValue(UserData::class.java)
                 binding.txtviewname.text = user?.username

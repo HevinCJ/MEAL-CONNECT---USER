@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:280336637626:android:cd8a01ce21632878e66c83",
+        "mobilesdk_app_id": "1:280336637626:android:c2c8ce276effdac7e66c83",
         "android_client_info": {
           "package_name": "com.example.mealconnect"
         }
@@ -16,10 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA4gBqywy07IZj87wge9yvAubTWgYOkIbE"
-        },
-        {
-          "current_key": "AIzaSyDCP6AjP-08LRPfsHzRhrzDiaBhxOsCTcE"
+          "current_key": "AIzaSyCYO_NdzhLPX1qu71HvUlV6H-x4qYBIuIE"
         }
       ],
       "services": {
@@ -30,7 +27,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:280336637626:android:978f3d74a244686ee66c83",
+        "mobilesdk_app_id": "1:280336637626:android:42e88f05115611d6e66c83",
         "android_client_info": {
           "package_name": "com.example.mealconnectuser"
         }
@@ -38,10 +35,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA4gBqywy07IZj87wge9yvAubTWgYOkIbE"
-        },
-        {
-          "current_key": "AIzaSyDCP6AjP-08LRPfsHzRhrzDiaBhxOsCTcE"
+          "current_key": "AIzaSyCYO_NdzhLPX1qu71HvUlV6H-x4qYBIuIE"
         }
       ],
       "services": {

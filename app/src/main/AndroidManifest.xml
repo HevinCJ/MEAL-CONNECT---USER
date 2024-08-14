@@ -7,6 +7,7 @@
 
 
     <application
+        android:name=".application.MealConnectApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,9 +20,7 @@
         <activity
             android:name=".activity.PaymentActivity"
             android:exported="false" />
-        <activity
-            android:name=".activity.OrderActivity"
-            android:exported="false" />
+
 
         <activity
             android:name=".activity.StartActivity"

@@ -15,7 +15,6 @@ import com.example.mealconnectuser.databinding.FragmentSignUpBinding
 import com.example.mealconnectuser.preferences.AppPreferences
 import com.example.mealconnectuser.preferences.PreferenceHelper
 import com.example.mealconnectuser.utils.UserData
-import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -79,8 +78,8 @@ class SignUp : Fragment() {
     }
 
     private fun setValueInFirebase(username: String, email: String, password: String) {
-        val user = UserData(username,email,password)
-        datbaseref.child(auth.currentUser.uid).setValue(user)
+        val user = UserData(auth.currentUser?.uid.orEmpty(),username,email,password)
+        datbaseref.child(auth.currentUser?.uid.orEmpty()).setValue(user)
     }
 
     private fun IntentToMainActivity() {

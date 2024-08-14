@@ -2,7 +2,6 @@ package com.example.mealconnectuser.adapter
 
 import android.content.Intent
 import android.net.Uri
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,8 +9,6 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.mealconnectuser.R
 import com.example.mealconnectuser.utils.LocationData
-import com.example.mealconnectuser.utils.PartnerData
-import com.example.mealconnectuser.viewModel.MainViewModel
 
 class BindingAdapter {
 
@@ -21,11 +18,18 @@ class BindingAdapter {
 
         @BindingAdapter("android:convertUrlToImage")
         @JvmStatic
-        fun convertUrlToImage(view:ImageView,url:String){
-            Glide.with(view.context)
-                .load(url)
-                .centerCrop()
-                .into(view)
+        fun convertUrlToImage(view:ImageView,url:String?){
+            if (!url.isNullOrEmpty()) {
+                Glide.with(view.context)
+                    .load(url ?: "")
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.imagenotfound)
+                    .into(view)
+            } else {
+                // Handle the case where url is null or empty
+                view.setImageResource(R.drawable.placeholder)
+            }
         }
 
         @BindingAdapter("android:IntentToCallerApp")
@@ -57,15 +61,17 @@ class BindingAdapter {
 
         @BindingAdapter("android:checkWhetherZeroOrNot")
         @JvmStatic
-        fun checkWhetherZeroOrNot(textView: TextView,amount:String){
-            val newAmount = amount.toInt()
-            if (newAmount == 0) {
-                textView.setText((R.string.free_text))
-            }else{
-                textView.text = "$amount Rs"
+        fun checkWhetherZeroOrNot(textView: TextView, amount: String?) {
+            if (amount != null) {
+                val newAmount = amount.toIntOrNull() ?: 0
+                if (newAmount == 0) {
+                    textView.setText(R.string.free_text)
+                } else {
+                    textView.text = "$newAmount Rs"
+                }
             }
-
         }
+
         @BindingAdapter("userQuantityOrDefault")
         @JvmStatic
         fun userQuantityOrDefault(textView: TextView, userQuantity: String?) {

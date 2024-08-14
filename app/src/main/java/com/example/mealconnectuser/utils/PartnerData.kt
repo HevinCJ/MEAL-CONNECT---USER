@@ -24,6 +24,7 @@ class PartnerData():Parcelable{
     var isorderplaced:Boolean = false
     var userPhoneNo:String = ""
 
+
     constructor(
         key: String,
         amount: String,
@@ -31,7 +32,7 @@ class PartnerData():Parcelable{
     ) : this() {
         this.key = key
         this.amount = amount
-        this.userquantity=userquantity
+
     }
 
     constructor(
@@ -44,7 +45,6 @@ class PartnerData():Parcelable{
     ) : this() {
         this.key = key
         this.amount = amount
-        this.userquantity=userquantity
         this.image=image
         this.descp=descp
         this.mealname=mealname
@@ -75,7 +75,6 @@ class PartnerData():Parcelable{
         this.partnerquantity = quantity
         this.location = location
         this.phoneno = phoneno
-        this.addedToCart = false
         this.timestamp = timestamp
     }
 

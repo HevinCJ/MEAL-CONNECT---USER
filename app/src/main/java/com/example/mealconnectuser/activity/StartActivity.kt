@@ -9,10 +9,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.mealconnectuser.databinding.ActivityStartBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class StartActivity : AppCompatActivity() {
     private var binding:ActivityStartBinding?=null
     private var navController:NavController?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,6 +29,7 @@ class StartActivity : AppCompatActivity() {
 
 
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         return navController!!.navigateUp() || super.onSupportNavigateUp()

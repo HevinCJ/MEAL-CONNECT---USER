@@ -5,28 +5,34 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import com.example.mealconnectuser.databinding.ActivityPaymentBinding
 import com.example.mealconnectuser.preferences.AppPreferences
-import com.example.mealconnectuser.viewModel.MainViewModel
+import com.example.mealconnectuser.utils.PartnerData
 import com.google.android.gms.common.util.Strings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.Gson
+import com.google.gson.JsonParseException
 import com.razorpay.Checkout
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
+import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONObject
+
 
 class PaymentActivity : AppCompatActivity(),PaymentResultWithDataListener {
     private var binding:ActivityPaymentBinding ?=null
 
     private lateinit var preferences: AppPreferences
+    private lateinit var partnerData: PartnerData
+
+    private lateinit var item: Array<PartnerData>
+
 
     private lateinit var databaseref:DatabaseReference
     private lateinit var auth:FirebaseAuth
 
-    private lateinit var id:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,30 +42,35 @@ class PaymentActivity : AppCompatActivity(),PaymentResultWithDataListener {
 
 
         auth = FirebaseAuth.getInstance()
-        databaseref = FirebaseDatabase.getInstance().getReference("Partner").child(auth.currentUser.uid)
-
+        databaseref = FirebaseDatabase.getInstance().getReference("Users").child(auth.currentUser!!.uid)
         preferences = AppPreferences(this)
 
 
 
         val amount = intent.getStringExtra("total_amount")?.toDouble()
         Log.d("amount_payment_gateway",amount.toString())
-         id = intent.getStringExtra("order_key").toString()
-        Log.d("amount_payment_gateway",id.toString())
+
+
+        val json = intent.getStringExtra("order_item")
+        val gson = Gson()
+         item = gson.fromJson(json, Array<PartnerData>::class.java)
+        Log.d("amount_payment_item", item.size.toString())
+
+
 
         Checkout.preload(this)
 
-        // Initialize Razorpay with the correct API key
+        // Initialize Razorpay with the correct API key 
         val co = Checkout()
         co.setKeyID("rzp_test_PX371cTQrQ0FK6") // Use your Razorpay test key
 
-        startPayment(amount,id)
+        startPayment(amount,item)
 
 
     }
 
 
-    private fun startPayment(amount:Double?,id:String?) {
+    private fun startPayment(amount:Double?,item:Array<PartnerData>?) {
 
         try {
             val actualamount = amount?.times(100)
@@ -94,13 +105,12 @@ class PaymentActivity : AppCompatActivity(),PaymentResultWithDataListener {
     override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
         // Handle payment success
 
-        databaseref.child(id).child("isorderplaced").setValue(true).addOnCompleteListener{
-            if (it.isSuccessful){
-                databaseref.child(id).child("userPhoneNo").setValue(preferences.phoneno)
-                Toast.makeText(this, "Payment is successful", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this,MainActivity::class.java)
-                startActivity(intent)
-                this.finish()
+        for (partnerData in item) {
+            databaseref.child("foodItems").child(partnerData.key).child("isorderplaced").setValue(true).addOnCompleteListener{
+                if (it.isSuccessful){
+                    databaseref.child("foodItems").child(partnerData.key).child("userPhoneNo").setValue(preferences.phoneno)
+                    intentToMainActivity()
+                }
             }
         }
 
@@ -120,5 +130,11 @@ class PaymentActivity : AppCompatActivity(),PaymentResultWithDataListener {
     override fun onDestroy() {
         super.onDestroy()
         Checkout.clearUserData(this)
+    }
+
+    private fun intentToMainActivity(){
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
+        this.finish()
     }
 }

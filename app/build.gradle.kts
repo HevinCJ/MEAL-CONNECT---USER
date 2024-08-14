@@ -4,9 +4,12 @@ plugins {
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
-    id("kotlin-kapt")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("kotlin-parcelize")
+    id("kotlin-android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -44,6 +47,10 @@ android {
         viewBinding=true
         dataBinding=true
     }
+
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
@@ -64,8 +71,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     //room database
-
-    val room_version = "2.6.1"
+    
 
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.room.compiler)
@@ -78,8 +84,6 @@ dependencies {
 
 
 
-    val nav_version = "2.7.7"
-
     // Kotlin
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
@@ -88,10 +92,10 @@ dependencies {
     implementation(libs.androidx.navigation.dynamic.features.fragment)
 
     //firebase authentication
-    implementation (libs.firebase.ui.auth)
+    implementation ( libs.firebase.auth)
 
     //firbase storage
-    implementation("com.google.firebase:firebase-storage")
+    implementation(libs.google.firebase.storage)
 
     //glide
     implementation (libs.glide)
@@ -114,4 +118,9 @@ dependencies {
     //razorpay
     implementation(libs.checkout)
 
+
+    //dagger and hilt
+    implementation (libs.hilt.android)
+    ksp (libs.dagger.compiler) // Dagger compiler
+    ksp (libs.hilt.compiler)   // Hilt compiler
 }
