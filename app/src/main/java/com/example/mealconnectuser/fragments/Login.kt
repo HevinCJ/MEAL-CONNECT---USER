@@ -96,6 +96,7 @@ class Login : Fragment() {
                         is NetworkResult.Success -> {
                             Toast.makeText(requireContext(),"Login Successfull",Toast.LENGTH_SHORT).show()
                             progressBar.hide()
+                            IntentToMainActivity()
                         }
                     }
                 }
